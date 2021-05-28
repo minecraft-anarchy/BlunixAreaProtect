@@ -1,0 +1,8 @@
+main: com.blunix.areaprotect.AreaProtect
+name: BlunixAreaProtect
+version: 0.1
+author: Wmorales01
+
+commands:
+  areaprotect:
+    aliases: [ ap ]
