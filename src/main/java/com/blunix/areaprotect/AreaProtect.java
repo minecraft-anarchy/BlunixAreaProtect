@@ -1,16 +1,25 @@
 package com.blunix.areaprotect;
 
 import com.blunix.areaprotect.commands.*;
+import com.blunix.areaprotect.files.AreasDataManager;
+import com.blunix.areaprotect.files.AreasFile;
+import com.blunix.areaprotect.models.ProtectedArea;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AreaProtect extends JavaPlugin {
+    private AreasFile areaData;
+    private AreasDataManager areaDataManager;
     private final Map<String, AreaCommand> subcommands = new LinkedHashMap<>();
+    private final List<ProtectedArea> protectedAreas = new ArrayList<>();
 
-    private static AreaProtect getInstance() {
+    public static AreaProtect getInstance() {
         return AreaProtect.getPlugin(AreaProtect.class);
     }
 
@@ -28,6 +37,8 @@ public class AreaProtect extends JavaPlugin {
 
     private void loadFiles() {
         saveDefaultConfig();
+        areaData = new AreasFile(this);
+        areaDataManager = new AreasDataManager(this);
     }
 
     private void registerCommands() {
@@ -41,7 +52,23 @@ public class AreaProtect extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
     }
 
+    public FileConfiguration getAreaData() {
+        return areaData.getConfig();
+    }
+
+    public void saveAreaData() {
+        areaData.saveConfig();
+    }
+
     public Map<String, AreaCommand> getSubcommands() {
         return subcommands;
+    }
+
+    public List<ProtectedArea> getProtectedAreas() {
+        return protectedAreas;
+    }
+
+    public AreasDataManager getAreaDataManager() {
+        return areaDataManager;
     }
 }
