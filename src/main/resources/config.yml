@@ -1,1 +1,5 @@
 # Time (In minutes) the players needs to play on the server before being able to protect an area.
+required-playtime: 600
+
+# If true, admins will be asked if they want to merge adjacent areas with the same owner.
+enable-merge: true

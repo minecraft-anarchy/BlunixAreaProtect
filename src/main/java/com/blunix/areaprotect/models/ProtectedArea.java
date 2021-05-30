@@ -14,20 +14,6 @@ public class ProtectedArea {
     private List<UUID> members;
     private List<Chunk> protectedChunks;
 
-    private World world;
-    private int xMin;
-    private int xMax;
-    private int yMin;
-    private int yMax;
-    private int zMin;
-    private int zMax;
-    private double xMinCentered;
-    private double xMaxCentered;
-    private double yMinCentered;
-    private double yMaxCentered;
-    private double zMinCentered;
-    private double zMaxCentered;
-
     public ProtectedArea(String name, UUID ownerUUID, Chunk initialChunk) {
         this.name = name;
         this.ownerUUID = ownerUUID;

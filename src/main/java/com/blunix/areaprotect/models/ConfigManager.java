@@ -8,4 +8,8 @@ public class ConfigManager {
     public static double getRequiredPlayTime() {
         return PLUGIN.getConfig().getDouble("required-playtime");
     }
+
+    public static boolean isMergeEnabled() {
+        return PLUGIN.getConfig().getBoolean("enable-merge");
+    }
 }
