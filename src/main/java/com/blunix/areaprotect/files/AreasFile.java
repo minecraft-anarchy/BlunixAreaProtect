@@ -23,10 +23,10 @@ public class AreasFile {
 
     public void reloadConfig() {
         if (configFile == null) {
-            configFile = new File(plugin.getDataFolder(), "data.yml");
+            configFile = new File(plugin.getDataFolder(), "areas.yml");
         }
         dataConfig = YamlConfiguration.loadConfiguration(this.configFile);
-        InputStream defaultStream = plugin.getResource("data.yml");
+        InputStream defaultStream = plugin.getResource("areas.yml");
         if (defaultStream != null) {
             YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
             dataConfig.setDefaults(defaultConfig);
@@ -53,10 +53,10 @@ public class AreasFile {
 
     public void saveDefaultConfig() {
         if (configFile == null) {
-            configFile = new File(plugin.getDataFolder(), "data.yml");
+            configFile = new File(plugin.getDataFolder(), "areas.yml");
         }
         if (!configFile.exists()) {
-            plugin.saveResource("data.yml", false);
+            plugin.saveResource("areas.yml", false);
         }
     }
 }

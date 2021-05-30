@@ -46,11 +46,12 @@ public class AreaProtect extends JavaPlugin {
         getCommand("areaprotect").setExecutor(new CommandRunner(this));
         getCommand("areaprotect").setTabCompleter(new CommandCompleter(this));
         subcommands.put("create", new CommandCreate(this));
+        subcommands.put("merge", new CommandMerge(this));
         subcommands.put("delete", new CommandDelete());
         subcommands.put("members", new CommandMembers());
-        subcommands.put("merge", new CommandMerge(this));
-        subcommands.put("help", new CommandHelp());
+        subcommands.put("info", new CommandInfo());
         subcommands.put("reload", new CommandReload(this));
+        subcommands.put("help", new CommandHelp());
     }
 
     private void registerListeners() {

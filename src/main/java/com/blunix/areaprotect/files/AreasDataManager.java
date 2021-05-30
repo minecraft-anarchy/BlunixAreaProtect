@@ -32,7 +32,7 @@ public class AreasDataManager {
             return;
         }
         areaSection.getKeys(false).forEach(areaName -> {
-            UUID ownerUUID = UUID.fromString(areaSection.getString(areaName + "owner"));
+            UUID ownerUUID = UUID.fromString(areaSection.getString(areaName + ".owner"));
             List<UUID> members = getMembersStringUUIDsAsUUID(areaSection.getStringList(areaName + ".members"));
             List<Chunk> protectedChunks = loadProtectedChunks(areaSection, areaName);
 

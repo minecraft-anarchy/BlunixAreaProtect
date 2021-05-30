@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 public class CommandMembers extends AreaCommand {
 
     public CommandMembers() {
-        setName("addmember");
+        setName("members");
         setHelpMessage("Adds the specified player to the selected protection.");
-        setPermission("blunixareaprotect.addmember");
+        setPermission("blunixareaprotect.members");
         setUsageMessage("/areaprotect members <AreaName> <Add/Remove> <Player>");
         setArgumentLength(4);
         setUniversalCommand(true);

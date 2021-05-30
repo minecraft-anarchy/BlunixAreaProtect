@@ -13,10 +13,7 @@ import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class CommandCreate extends AreaCommand {
@@ -102,7 +99,7 @@ public class CommandCreate extends AreaCommand {
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
                 adjacentArea = ProtectedArea.getByChunk(world.getChunkAt(centerX + x, centerZ + z));
-                if (adjacentArea == null) continue;
+                if (adjacentArea == null || adjacentAreas.contains(adjacentArea)) continue;
 
                 adjacentAreas.add(adjacentArea);
             }
@@ -113,17 +110,13 @@ public class CommandCreate extends AreaCommand {
     private BaseComponent[] getMergeMessage(Chunk center) {
         ComponentBuilder builder = new ComponentBuilder(StringUtil.formatColor("&6This area is close to another " +
                 "area owned by the same player, which one of the following areas would you like to merge to the " +
-                "current one you are creating?"));
+                "current one you are creating?\n"));
         Iterator<ProtectedArea> areaIterator = getAdjacentAreas(center).iterator();
         while (areaIterator.hasNext()) {
             builder.append(getClickableArea(areaIterator.next()));
-            if (areaIterator.hasNext()) {
-                builder.append("\n");
-            }
+            builder.append("\n");
         }
-        builder.append(getClickableNone());
-
-        return builder.create();
+        return builder.append(getClickableNone()).create();
     }
 
     private TextComponent getClickableArea(ProtectedArea area) {
