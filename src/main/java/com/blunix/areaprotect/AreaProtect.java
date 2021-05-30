@@ -12,11 +12,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.*;
 
 public class AreaProtect extends JavaPlugin {
-    private AreasFile areaData;
-    private AreasDataManager areaDataManager;
     private final Map<String, AreaCommand> subcommands = new LinkedHashMap<>();
     private final Map<Player, ProtectedArea> areaMergers = new HashMap<>();
     private final List<ProtectedArea> protectedAreas = new ArrayList<>();
+    private AreasFile areaData;
+    private AreasDataManager areaDataManager;
 
     public static AreaProtect getInstance() {
         return AreaProtect.getPlugin(AreaProtect.class);
@@ -31,13 +31,15 @@ public class AreaProtect extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        areaDataManager.saveAllAreas();
     }
 
     private void loadFiles() {
         saveDefaultConfig();
         areaData = new AreasFile(this);
         areaDataManager = new AreasDataManager(this);
+
+        areaDataManager.loadAllAreas();
     }
 
     private void registerCommands() {

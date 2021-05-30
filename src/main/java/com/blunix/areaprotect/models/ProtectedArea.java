@@ -2,7 +2,6 @@ package com.blunix.areaprotect.models;
 
 import com.blunix.areaprotect.AreaProtect;
 import org.bukkit.Chunk;
-import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +28,6 @@ public class ProtectedArea {
         this.protectedChunks = protectedChunks;
     }
 
-    public void registerArea() {
-        AreaProtect.getInstance().getProtectedAreas().add(this);
-    }
-
-    private void saveAreaData() {
-        AreaProtect.getInstance().getAreaDataManager().saveArea(this);
-    }
-
     public static ProtectedArea getByName(String name) {
         for (ProtectedArea area : AreaProtect.getInstance().getProtectedAreas()) {
             if (!area.getName().equals(name)) continue;
@@ -53,6 +44,20 @@ public class ProtectedArea {
             return area;
         }
         return null;
+    }
+
+    public void registerArea() {
+        AreaProtect.getInstance().getProtectedAreas().add(this);
+    }
+
+    public void unregisterArea() {
+        AreaProtect plugin = AreaProtect.getInstance();
+        plugin.getProtectedAreas().remove(this);
+        plugin.getAreaDataManager().deleteArea(this);
+    }
+
+    private void saveAreaData() {
+        AreaProtect.getInstance().getAreaDataManager().saveArea(this);
     }
 
     public String getName() {
