@@ -1,23 +1,29 @@
 package com.blunix.areaprotect.models;
 
 import com.blunix.areaprotect.AreaProtect;
+import com.blunix.areaprotect.util.Messager;
+import com.blunix.areaprotect.util.UUIDUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class ProtectedArea {
-    private String name;
-    private UUID ownerUUID;
-    private List<UUID> members;
-    private List<Chunk> protectedChunks;
+    private final String name;
+    private final UUID ownerUUID;
+    private final List<UUID> members;
+    private final List<Chunk> protectedChunks;
 
     public ProtectedArea(String name, UUID ownerUUID, Chunk initialChunk) {
         this.name = name;
         this.ownerUUID = ownerUUID;
         this.members = new ArrayList<>();
         this.protectedChunks = new ArrayList<>();
+        members.add(ownerUUID);
         protectedChunks.add(initialChunk);
     }
 
@@ -26,6 +32,43 @@ public class ProtectedArea {
         this.ownerUUID = ownerUUID;
         this.members = members;
         this.protectedChunks = protectedChunks;
+    }
+
+    public void registerArea() {
+        AreaProtect.getInstance().getProtectedAreas().add(this);
+    }
+
+    public void unregisterArea() {
+        AreaProtect plugin = AreaProtect.getInstance();
+        plugin.getProtectedAreas().remove(this);
+        plugin.getAreaDataManager().deleteArea(this);
+    }
+
+    public boolean isOwner(Player player) {
+        return ownerUUID.equals(player.getUniqueId());
+    }
+
+    public boolean isMember(OfflinePlayer player) {
+        return members.contains(UUIDUtil.getOfflineUUID(player.getName()));
+    }
+
+    public void addProtectedChunk(Chunk newChunk) {
+        protectedChunks.add(newChunk);
+        saveAreaData();
+    }
+
+    public void addMember(OfflinePlayer member) {
+        String name = member.getName();
+        members.add(UUIDUtil.getOfflineUUID(name));
+        broadcastToMembers("&a&l" + name + " &ahas been added to &l" + this.name + "&a!");
+        saveAreaData();
+    }
+
+    public void removeMember(OfflinePlayer member) {
+        String name = member.getName();
+        members.remove(UUIDUtil.getOfflineUUID(name));
+        broadcastToMembers("&c&l" + name + " &chas been removed from &l" + this.name + "&c!");
+        saveAreaData();
     }
 
     public static ProtectedArea getByName(String name) {
@@ -46,18 +89,18 @@ public class ProtectedArea {
         return null;
     }
 
-    public void registerArea() {
-        AreaProtect.getInstance().getProtectedAreas().add(this);
-    }
-
-    public void unregisterArea() {
-        AreaProtect plugin = AreaProtect.getInstance();
-        plugin.getProtectedAreas().remove(this);
-        plugin.getAreaDataManager().deleteArea(this);
-    }
-
     private void saveAreaData() {
         AreaProtect.getInstance().getAreaDataManager().saveArea(this);
+    }
+
+    private void broadcastToMembers(String text) {
+        Player member;
+        for (UUID uuid : members) {
+            member = Bukkit.getPlayer(uuid);
+            if (member == null) continue;
+
+            Messager.sendMessage(member, text);
+        }
     }
 
     public String getName() {

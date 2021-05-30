@@ -39,7 +39,7 @@ public class CommandMerge extends AreaCommand {
                 Messager.sendUnknownAreaMessage(player);
                 return;
             }
-            mergedArea.getProtectedChunks().add(currentArea.getProtectedChunks().remove(0));
+            mergedArea.addProtectedChunk(currentArea.getProtectedChunks().remove(0));
             Messager.sendSuccessMessage(player, "&aYou have successfully merged &l" + currentArea.getName()
                     + " &ato &l" + mergedArea.getName());
         }
